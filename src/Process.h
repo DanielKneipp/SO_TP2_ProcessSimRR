@@ -33,13 +33,16 @@ public:
 	/*
 	 * BRIEF:
 	 *     Atualiza o tempo restante para fim da execucao do processo
-	 *     em um intervalo de tempo.
+	 *     subtraindo-o em um intervalo de tempo passado como parametro.
+	 *
+	 * PARAM:
+	 *     unsigned - _time - Valor que sera subtraido do tempo restante atual
 	 *
 	 * RETURN:
 	 *     false - Caso o processo tenha finalizado sua execucao
 	 *     true  - Caso contrario.
 	 */
-	bool update_serviceTime_remaining ();
+	bool update_serviceTime_remaining (unsigned _time);
 
 	/*
 	 * BRIEF:
@@ -69,6 +72,15 @@ public:
 	 *     time - unsigned - Tempo do termino do processo.
 	 */
 	void set_finishTime (unsigned time);
+
+	/*
+	 * BRIEF:
+	 *     Retorna o tempo de execucao necessario para finalizar o processo.
+	 *
+	 * RETURN:
+	 *     unsigned - tempo restante para terminar o processo.
+	 */
+	unsigned get_serviceTime_remaining ();
 };
 
 #endif /* PROCESS_H_ */

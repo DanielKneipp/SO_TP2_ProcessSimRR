@@ -9,17 +9,19 @@
 #define ROUNDROBIN_H_
 
 #include <vector>
+#include <unistd.h>   /* usleep (LINUX) */
 #include "Process.h"
 
 struct info_exec {
 	unsigned n_processos_executados;
 	unsigned float TrTx_media;
+	unsigned tempo_corrido;
 };
 
 /*
  * BRIEF:
  *     Simula a execucao de um escalonador do tipo Round Robin, gerando de
- *     0 a 3 processos por iteracao com tempo de execucao variando de 1 a (quantum + 3)
+ *     0 a 3 processos por iteracao com tempo de execucao variando de 1 a (quantum + 1000)
  *
  * PARAM:
  *     n_iter - const unsigned - numero que iteraceos que serao executadas,
@@ -28,7 +30,7 @@ struct info_exec {
  *                               sendo executado por outro.
  *
  * RETURN:
- *    struct info_exec - Estrutura contendo numero de processos executados e
+ *     struct info_exec - Estrutura contendo numero de processos executados e
  *                       Tr/Tx medio.
  */
 struct info_exec simular_RoundRobin(const unsigned n_iter, unsigned const quantum);

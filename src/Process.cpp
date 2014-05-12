@@ -16,8 +16,9 @@ Process::Process(
 	this->serviceTime_remaining = this->serviceTime;
 }
 
-bool Process::update_serviceTime_remaining() {
-	if (--(this->serviceTime_remaining) == 0)
+bool Process::update_serviceTime_remaining(unsigned _time) {
+	this->serviceTime_remaining -= _time;
+	if (this->serviceTime_remaining == 0)
 		return false;
 	else
 		return true;
@@ -33,6 +34,10 @@ states Process::get_state() {
 
 void Process::set_finishTime (unsigned time) {
 	this->finishTime = time;
+}
+
+unsigned Process::get_serviceTime_remaining () {
+	return this->serviceTime_remaining;
 }
 
 Process::~Process() {
