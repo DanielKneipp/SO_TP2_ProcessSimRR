@@ -7,8 +7,28 @@
 
 #include "RoundRobin.h"
 
-struct info_exec simular_RoundRobin(const unsigned n_iter, unsigned const quantum) {
+struct info_exec simular_RoundRobin(const unsigned n_iter, const unsigned quantum) {
+	RoundRobin RR (quantum);
+	struct info_exec info;
+	unsigned tempo_corrido = 0;
+	srand ((unsigned) time (NULL)); /* Estabelecer semente baseada na hora e data atual */
 
+	for (int i = 0; i < n_iter; i++) {
+		/* TODO gerar e adicionar n processos (0 <= n <= 3) */
+		int n_processos = rand() % 4;
+		for (int j = 0; j < n_processos; j++) {
+			unsigned id = rand() % 65536;
+			unsigned serviceTime = (rand() % (quantum + 1000)) + 10;
+			Process __processo (id, serviceTime, tempo_corrido);
+			RR.adicionar_processo(__processo);
+		}
+
+		/* TODO Simular uma passada de tempo (tempo variavel) */
+		RR.passar_tempo(&tempo_corrido);
+	}
+	info.n_processos_executados = RR.n_processos_executados();
+	info.TrTx_media = RR.get_TrTx_media();
+	return info;
 }
 
 RoundRobin::RoundRobin(unsigned const quantum) :
@@ -30,7 +50,7 @@ void RoundRobin::passar_tempo(unsigned* tempo_atual) {
 	this->processos->erase(this->processos->begin());
 	unsigned cont_tempo = this->executar_processo(processo);
 
-	/* TODO Atualiziar o tempo total de execução e o tempo restante para o         */
+	/* TODO Atualiziar o tempo total de execução e o tempo restante para o        */
 	/* termino da execucao do processo, caso o mesmo ja tenha terminado,          */
 	/* entao ele e finalizado, ou ocorre a interrupcao do processo caso contrario */
 	*tempo_atual += cont_tempo;
@@ -38,6 +58,10 @@ void RoundRobin::passar_tempo(unsigned* tempo_atual) {
 		this->finalizar_processo(processo, *tempo_atual);
 	else
 		this->interromper_processo(processo);
+}
+
+unsigned float RoundRobin::get_TrTx_media() {
+	return this->TrTx_media;
 }
 
 unsigned RoundRobin::n_processos_executados() {
@@ -66,7 +90,8 @@ unsigned RoundRobin::executar_processo(Process &processo) {
 	processo.set_state(RUNNING);
 
 	/* TODO Parar a execucao do programa simulando a execucao do processo */
-	cont_tempo = (this->quantum < processo.get_serviceTime_remaining()) ? this->quantum : processo.get_serviceTime_remaining();
+	cont_tempo = (this->quantum < processo.get_serviceTime_remaining()) ?
+			this->quantum : processo.get_serviceTime_remaining();
 	usleep(cont_tempo); /* Congelar a execucao do programa por 'cont_tempo' milesegundos (LINUX) */
 
 	return cont_tempo;
@@ -94,6 +119,9 @@ bool RoundRobin::finalizar_processo(Process &processo, unsigned tempo_atual) {
 	__processo.set_state(TERMINATED);
 	__processo.set_finishTime(tempo_atual);
 	processos_terminados->push_back(__processo);
+
+	/* TODO Atualizar valor de Tr/Tx */
+	this->atualziar_TrTx();
 
 	return true;
 }
