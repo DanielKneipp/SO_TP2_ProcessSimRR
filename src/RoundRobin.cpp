@@ -13,12 +13,12 @@ struct info_exec simular_RoundRobin(const unsigned n_iter, const unsigned quantu
 	unsigned tempo_corrido = 0;
 	srand ((unsigned) time (NULL)); /* Estabelecer semente baseada na hora e data atual */
 
-	for (int i = 0; i < n_iter; i++) {
+	for (unsigned i = 0; i < n_iter; i++) {
 		/* TODO gerar e adicionar n processos (0 <= n <= 3) */
 		int n_processos = rand() % 4;
 		for (int j = 0; j < n_processos; j++) {
-			unsigned id = rand() % 65536;
-			unsigned serviceTime = (rand() % (quantum + 1000)) + 10;
+			unsigned id = (RR.n_processos_executados())+j /*rand() % 65536*/;
+			unsigned serviceTime = (rand() % (quantum + 2000)) + 10;
 			Process __processo (id, serviceTime, tempo_corrido);
 			RR.adicionar_processo(__processo);
 		}
@@ -28,16 +28,18 @@ struct info_exec simular_RoundRobin(const unsigned n_iter, const unsigned quantu
 	}
 	info.n_processos_executados = RR.n_processos_executados();
 	info.TrTx_media = RR.get_TrTx_media();
+	info.tempo_corrido = tempo_corrido;
 	return info;
 }
 
 RoundRobin::RoundRobin(unsigned const quantum) :
-		TrTx_media(0.0), processos(new std::vector<Process>()),
-		processos_terminados(new std::vector<Process>()), quantum(quantum) {}
+		processos(new std::vector<Process>()),
+		processos_terminados(new std::vector<Process>()),
+		TrTx_media(0.0), quantum(quantum) {}
 
 RoundRobin::~RoundRobin() {
-	delete [] processos;
-	delete [] processos_terminados;
+	delete processos_terminados;
+	delete processos;
 }
 
 void RoundRobin::adicionar_processo(Process &processo) {
@@ -45,8 +47,12 @@ void RoundRobin::adicionar_processo(Process &processo) {
 }
 
 void RoundRobin::passar_tempo(unsigned* tempo_atual) {
+	/* TODO caso nao tenha processo pronto, a iteracao e cancelada */
+	if (this->processos->size() == 0)
+		return;
+
 	/* TODO Pegar um processo no estado READY e processa-lo */
-	Process processo (this->processos->begin());
+	Process processo (*(this->processos->begin()));
 	this->processos->erase(this->processos->begin());
 	unsigned cont_tempo = this->executar_processo(processo);
 
@@ -60,7 +66,7 @@ void RoundRobin::passar_tempo(unsigned* tempo_atual) {
 		this->interromper_processo(processo);
 }
 
-unsigned float RoundRobin::get_TrTx_media() {
+float RoundRobin::get_TrTx_media() {
 	return this->TrTx_media;
 }
 
@@ -70,12 +76,12 @@ unsigned RoundRobin::n_processos_executados() {
 
 void RoundRobin::atualziar_TrTx() {
 	unsigned Tr = 0, Tx = 0;
-	unsigned float TrTx = 0.0;
+	float TrTx = 0.0;
 
 	std::vector<Process>::iterator it;
 	for (it = this->processos_terminados->begin(); it != this->processos_terminados->end(); it++) {
-		Tx = it->serviceTime;
-		Tr = it->finishTime - it->arrivalTime;
+		Tx = it->get_serviceTime();
+		Tr = it->get_finishTime() - it->get_arrivalTime();
 		TrTx += Tr/Tx;
 	}
 	this->TrTx_media = TrTx / this->processos_terminados->size();
@@ -99,7 +105,7 @@ unsigned RoundRobin::executar_processo(Process &processo) {
 
 bool RoundRobin::interromper_processo(Process &processo) {
 	Process __processo(processo);
-	if (__processo.get_state != RUNNING)
+	if (__processo.get_state() != RUNNING)
 		return false;
 
 	/* TODO Alterar o estado do processo e coloca-lo no final fila de processos */

@@ -76,3 +76,29 @@ local.properties
 
 # TeXlipse plugin
 .texlipse
+
+##### C++.gitignore #####
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+##### Outros #####
+Debug/

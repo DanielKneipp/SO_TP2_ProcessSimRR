@@ -16,17 +16,17 @@ enum states {
 
 class Process {
 private:
-	const unsigned id;
-	const unsigned serviceTime;
+	unsigned id;
+	unsigned serviceTime;
 	unsigned serviceTime_remaining;
-	const unsigned arrivalTime;
+	unsigned arrivalTime;
 	unsigned finishTime;
 	states state;
 
 public:
 	Process(
 			const unsigned id, const unsigned serviceTime,
-			const unsigned arrivalTime, );
+			const unsigned arrivalTime);
 
 	virtual ~Process();
 
@@ -60,9 +60,38 @@ public:
 	 *     Retorna o estado atual do processo baseado no enum states definido.
 	 *
 	 * RETURN:
-	 *     states - estado do processo.
+	 *     states - Estado do processo.
 	 */
 	states get_state ();
+
+	/*
+	 * BRIEF:
+	 *     Retorna o tempo necessario par o processo terminar sua execucao.
+	 *
+	 * RETURN:
+	 *     unsigned - Tempo de execucao total.
+	 */
+	unsigned get_serviceTime ();
+
+	/*
+	 * BRIEF:
+	 *     Retorna o instante de tempo que o processo entrou no estado READY pela
+	 *     primeira vez.
+	 *
+	 * RETURN:
+	 *     unsigned - Instante de tempo da chegada do processo ao processador.
+	 */
+	unsigned get_arrivalTime ();
+
+	/*
+	 * BRIEF:
+	 *     Retorna o instante de tempo em que o processo terminou sua execucao.
+	 *     Caso o mesmo nao tenha terminado, e retornado 0.
+	 *
+	 * RETURN:
+	 *     unsigned - Instante de tempo do termino da execucao do processo.
+	 */
+	unsigned get_finishTime ();
 
 	/*
 	 * BRIEF:

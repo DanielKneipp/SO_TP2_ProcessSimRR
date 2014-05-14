@@ -11,18 +11,19 @@
 #include <vector>
 #include <time.h>     /* srand() */
 #include <unistd.h>   /* usleep (LINUX) */
+#include <stdlib.h>   /* rand() */
 #include "Process.h"
 
 struct info_exec {
 	unsigned n_processos_executados;
-	unsigned float TrTx_media;
+	float TrTx_media;
 	unsigned tempo_corrido;
 };
 
 /*
  * BRIEF:
  *     Simula a execucao de um escalonador do tipo Round Robin, gerando de
- *     0 a 3 processos por iteracao com tempo de execucao variando de 10 a (quantum + 1000)
+ *     0 a 3 processos por iteracao com tempo de execucao variando de 10 a (quantum + 2000)
  *
  * PARAM:
  *     n_iter - const unsigned - numero que iteraceos que serao executadas,
@@ -40,7 +41,7 @@ class RoundRobin {
 private:
 	std::vector<Process>* processos;
 	std::vector<Process>* processos_terminados;
-	unsigned float TrTx_media;
+	float TrTx_media;
 	unsigned const quantum;
 
 	/*
@@ -145,9 +146,9 @@ public:
 	 *     de todos os processos executados.
 	 *
 	 * RETURN:
-	 *     unsigned float - >edia dos Tr/Tx de todos os processos.
+	 *     float - >edia dos Tr/Tx de todos os processos.
 	 */
-	unsigned float get_TrTx_media();
+	float get_TrTx_media();
 };
 
 #endif /* ROUNDROBIN_H_ */
