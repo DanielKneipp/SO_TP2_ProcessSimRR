@@ -21,7 +21,7 @@ int main(int argc, char **argv) {
 	info = simular_RoundRobin(n_iter, quantum);
 	std::cout << "Numero de processos executados: " << info.n_processos_executados << std::endl;
 	std::cout << "Tr/Tx (tempode de Turnaround / Tempo de execucao): " << info.TrTx_media  << std::endl;
-	std::cout << "Tempo total de execucao: " << info.tempo_corrido << std::endl;
+	std::cout << "Tempo total de execucao: " << info.tempo_corrido << " milesegundos" << std::endl;
 
 	return 0;
 }

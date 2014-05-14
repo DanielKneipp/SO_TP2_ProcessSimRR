@@ -98,7 +98,7 @@ unsigned RoundRobin::executar_processo(Process &processo) {
 	/* TODO Parar a execucao do programa simulando a execucao do processo */
 	cont_tempo = (this->quantum < processo.get_serviceTime_remaining()) ?
 			this->quantum : processo.get_serviceTime_remaining();
-	usleep(cont_tempo); /* Congelar a execucao do programa por 'cont_tempo' milesegundos (LINUX) */
+	usleep(cont_tempo*1000); /* Congelar a execucao do programa por 'cont_tempo' milesegundos (LINUX) */
 
 	return cont_tempo;
 }

@@ -11,11 +11,6 @@ Process::Process(
 		const unsigned id, const unsigned serviceTime, const unsigned arrivalTime) :
 		 id(id), serviceTime(serviceTime), serviceTime_remaining(serviceTime),
 		 arrivalTime(arrivalTime), finishTime(0), state(READY) {}
-	/*this->id = id;
-	this->serviceTime = serviceTime;
-	this->arrivalTime = arrivalTime;
-	this->serviceTime_remaining = this->serviceTime;
-}*/
 
 bool Process::update_serviceTime_remaining(unsigned _time) {
 	this->serviceTime_remaining -= _time;
