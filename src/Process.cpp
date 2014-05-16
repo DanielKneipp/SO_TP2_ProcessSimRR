@@ -48,6 +48,29 @@ unsigned Process::get_serviceTime_remaining () {
 	return this->serviceTime_remaining;
 }
 
+void Process::printf_info () {
+    std::cout << std::endl << "========= " << "Processo: " << this->id << " =========" <<
+                 std::endl << "Tempo de servico: " << this->serviceTime <<
+                 std::endl << "Tempo de servico restante: " << this->serviceTime_remaining <<
+                 std::endl << "Instante de tempo de chegada do processo: " << this->arrivalTime;
+    switch (this->state) {
+    case RUNNING:
+        std::cout << std::endl << "Estado: RUNNING";
+        break;
+    case READY:
+        std::cout << std::endl << "Estado: READY";
+        break;
+    case TERMINATED:
+        std::cout << std::endl << "Estado: TERMINATED";
+        std::cout << std::endl << "Instante de tempo do termino da execucao: " << this->finishTime;
+        std::cout << std::endl << "Tr/Tx: " << (float) ((this->finishTime - this->arrivalTime) / this->serviceTime);
+        break;
+    default:
+        break;
+    }
+    std::cout << std::endl << "========= " << "Processo: " << this->id << " =========" << std::endl;
+}
+
 Process::~Process() {
 }
 

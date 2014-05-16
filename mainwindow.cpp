@@ -25,5 +25,5 @@ void MainWindow::on_pushButton_clicked()
 
     ui->label_TrTx->setText (QString::number(info.TrTx_media));
     ui->label_n_proc_exec->setText (QString::number(info.n_processos_executados));
-    ui->label_temp->setText (QString::number(info.tempo_corrido) + "ms");
+    ui->label_temp->setText (QString::number(info.tempo_corrido) + " ms");
 }

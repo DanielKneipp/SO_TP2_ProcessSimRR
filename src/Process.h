@@ -5,6 +5,8 @@
  *      Author: daniel
  */
 
+#include <iostream>
+
 #ifndef PROCESS_H_
 #define PROCESS_H_
 
@@ -110,6 +112,12 @@ public:
 	 *     unsigned - tempo restante para terminar o processo.
 	 */
 	unsigned get_serviceTime_remaining ();
+
+    /*
+     * BRIEF:
+     *     Imprimi na saida padrao, as informacoes do processo.
+     */
+    virtual void printf_info();
 };
 
 #endif /* PROCESS_H_ */

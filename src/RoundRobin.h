@@ -9,6 +9,7 @@
 #define ROUNDROBIN_H_
 
 #include <vector>
+#include <iostream>
 #include <time.h>     /* srand() */
 #include <unistd.h>   /* usleep (LINUX) */
 #include <stdlib.h>   /* rand() */
@@ -148,7 +149,7 @@ public:
 	 * RETURN:
 	 *     float - >edia dos Tr/Tx de todos os processos.
 	 */
-	float get_TrTx_media();
+    float get_TrTx_media();
 };
 
 #endif /* ROUNDROBIN_H_ */

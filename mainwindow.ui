@@ -163,7 +163,7 @@
          <item>
           <widget class="QLabel" name="label_temp_L">
            <property name="text">
-            <string>Tempo conrrido: </string>
+            <string>Tempo corrido: </string>
            </property>
           </widget>
          </item>

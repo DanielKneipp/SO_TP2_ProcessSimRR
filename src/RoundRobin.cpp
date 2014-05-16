@@ -10,14 +10,14 @@
 struct info_exec simular_RoundRobin(const unsigned n_iter, const unsigned quantum) {
 	RoundRobin RR (quantum);
 	struct info_exec info;
-	unsigned tempo_corrido = 0;
+    unsigned tempo_corrido = 0, ids = 1;
 	srand ((unsigned) time (NULL)); /* Estabelecer semente baseada na hora e data atual */
 
 	for (unsigned i = 0; i < n_iter; i++) {
 		/* TODO gerar e adicionar n processos (0 <= n <= 3) */
-		int n_processos = rand() % 4;
-		for (int j = 0; j < n_processos; j++) {
-			unsigned id = (RR.n_processos_executados())+j /*rand() % 65536*/;
+        unsigned short n_processos = rand() % 4;
+        for (unsigned j = 0; j < n_processos; j++) {
+            unsigned id = ids++ /*rand() % 65536*/;
 			unsigned serviceTime = (rand() % (quantum + 2000)) + 10;
 			Process __processo (id, serviceTime, tempo_corrido);
 			RR.adicionar_processo(__processo);
@@ -44,6 +44,8 @@ RoundRobin::~RoundRobin() {
 
 void RoundRobin::adicionar_processo(Process &processo) {
 	processos->push_back(processo);
+    std::cout << std::endl << "*** PROCESSO CRIADO ***";
+    processo.printf_info();
 }
 
 void RoundRobin::passar_tempo(unsigned* tempo_atual) {
@@ -95,6 +97,9 @@ unsigned RoundRobin::executar_processo(Process &processo) {
 		return 0;
 	processo.set_state(RUNNING);
 
+    std::cout << std::endl << "*** PROCESSO EM EXECUCAO ***";
+    processo.printf_info();
+
 	/* TODO Parar a execucao do programa simulando a execucao do processo */
 	cont_tempo = (this->quantum < processo.get_serviceTime_remaining()) ?
 			this->quantum : processo.get_serviceTime_remaining();
@@ -110,6 +115,10 @@ bool RoundRobin::interromper_processo(Process &processo) {
 
 	/* TODO Alterar o estado do processo e coloca-lo no final fila de processos */
 	__processo.set_state(READY);
+
+    std::cout << std::endl << "*** PROCESSO INTERROMPIDO ***";
+    __processo.printf_info();
+
 	this->processos->push_back(__processo);
 
 	return true;
@@ -124,6 +133,10 @@ bool RoundRobin::finalizar_processo(Process &processo, unsigned tempo_atual) {
 	/* de processos terminados, atribuindo ao mesmo o momento em que ele terminou */
 	__processo.set_state(TERMINATED);
 	__processo.set_finishTime(tempo_atual);
+
+    std::cout << std::endl << "*** PROCESSO FINALIZADO ***";
+    __processo.printf_info();
+
 	processos_terminados->push_back(__processo);
 
 	/* TODO Atualizar valor de Tr/Tx */
